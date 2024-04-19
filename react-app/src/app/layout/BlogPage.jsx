@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -11,6 +12,7 @@ const formatDate = (dateString) => {
 
 export default function BlogPage() {
   const [articles, setArticles] = useState([]);
+
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -24,6 +26,9 @@ export default function BlogPage() {
 
     fetchArticles();
   }, []);
+
+
+
     
   return (
     <div className="container mx-auto px-4 py-8">
@@ -39,7 +44,9 @@ export default function BlogPage() {
                       </div>
                   )
               })}
+              
       </div>
+      
     </div>
   )
 }

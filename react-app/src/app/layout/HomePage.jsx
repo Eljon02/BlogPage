@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function HomePage() {
   return (
@@ -8,6 +9,10 @@ export default function HomePage() {
         <a href="/blog" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">
             Read the Blog
         </a>
+  
+        <Link to="/ArticleForm" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">
+        edit 
+        </Link>
     </div>
   )
 }
