@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using BlogPage.Data;
 using BlogPage.Models;
 
-
 namespace BlogPage.Controllers
 {
 
@@ -28,6 +27,34 @@ namespace BlogPage.Controllers
         // Get Articles By Id
 
         // Put (Edit) Article
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutArticle(Guid id, Comment comment)
+        {
+            if (id != comment.CommentId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(comment).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CommentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
 
         // Post (Add) New Article
         [HttpPost]
@@ -45,5 +72,11 @@ namespace BlogPage.Controllers
         }
 
         // Delete Article
+
+
+        private bool CommentExists(Guid id)
+        {
+            return (_context.Comments?.Any(e => e.CommentId == id)).GetValueOrDefault();
+        }
     }
 }
