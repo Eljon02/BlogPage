@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 
+
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -27,6 +28,9 @@ export default function BlogPage() {
 
     fetchArticles();
   }, []);
+
+
+
     
   return (
     <div className='h-screen'>
