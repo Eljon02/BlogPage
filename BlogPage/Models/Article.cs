@@ -7,5 +7,6 @@
         public string Content { get; set; } = string.Empty;
         public DateTime PublicationDate { get; set; }
         public string[]? Tags { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
