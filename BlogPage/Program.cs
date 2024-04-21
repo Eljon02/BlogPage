@@ -1,3 +1,4 @@
+using BlogPage.AutoMapper.Mapping;
 using BlogPage.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,9 @@ builder.Services.AddCors(opt =>
         policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
     });
 });
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

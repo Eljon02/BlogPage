@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogPage.Data;
 using BlogPage.Models;
+using AutoMapper.QueryableExtensions;
+using BlogPage.Models.DTOs;
+using AutoMapper;
 
 namespace BlogPage.Controllers
 {
@@ -15,32 +18,34 @@ namespace BlogPage.Controllers
     public class ArticlesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ArticlesController(ApplicationDbContext context)
+        public ArticlesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // Get All Articles
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Article>>> GetArticles()
+        public async Task<ActionResult<IEnumerable<ArticleDto>>> GetArticles()
         {
           if (_context.Articles == null)
           {
               return NotFound();
           }
-            return await _context.Articles.ToListAsync();
+            return await _context.Articles.ProjectTo<ArticleDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         // Get Articles By Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Article>> GetArticle(Guid id)
+        public async Task<ActionResult<ArticleDto>> GetArticle(Guid id)
         {
           if (_context.Articles == null)
           {
               return NotFound();
           }
-            var article = await _context.Articles.FindAsync(id);
+            var article = await _context.Articles.ProjectTo<ArticleDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.ArticleId == id);
 
             if (article == null)
             {

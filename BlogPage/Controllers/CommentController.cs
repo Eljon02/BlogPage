@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BlogPage.Data;
 using BlogPage.Models;
+using AutoMapper.QueryableExtensions;
+using BlogPage.Models.DTOs;
+using AutoMapper;
 
 namespace BlogPage.Controllers
 {
@@ -16,15 +19,59 @@ namespace BlogPage.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public CommentController(ApplicationDbContext context)
+        public CommentController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // Get All Articles
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetComments()
+        {
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            return await _context.Comments.OrderBy(x => x.CreatedAt).ProjectTo<CommentDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
 
         // Get Articles By Id
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CommentDto>> GetComment(Guid id)
+        {
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            var comment = await _context.Comments.ProjectTo<CommentDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.CommentId == id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return comment;
+        }
+
+        // Get Articles by BlogId
+
+        [HttpGet("blog/{articleId}")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsByArticleID(Guid articleId)
+        {
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            return await _context.Comments
+                    .Where(x => x.Article.ArticleId == articleId)
+                    .OrderBy(x => x.CreatedAt)
+                    .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
+                    .ToListAsync();
+        }
 
         // Put (Edit) Article
         [HttpPut("{id}")]

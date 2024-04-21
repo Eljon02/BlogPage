@@ -9,4 +9,4 @@ namespace BlogPage.Models
         public Article Article { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
-}
+}   
