@@ -27,7 +27,7 @@ namespace BlogPage.Controllers
             _mapper = mapper;
         }
 
-        // Get All Articles
+        // Get All Comments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetComments()
         {
@@ -38,7 +38,7 @@ namespace BlogPage.Controllers
             return await _context.Comments.OrderBy(x => x.CreatedAt).ProjectTo<CommentDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        // Get Articles By Id
+        // Get Comments By Id
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentDto>> GetComment(Guid id)
@@ -57,7 +57,7 @@ namespace BlogPage.Controllers
             return comment;
         }
 
-        // Get Articles by BlogId
+        // Get Comment by BlogId
 
         [HttpGet("blog/{articleId}")]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsByArticleID(Guid articleId)
@@ -73,7 +73,7 @@ namespace BlogPage.Controllers
                     .ToListAsync();
         }
 
-        // Put (Edit) Article
+        // Put (Edit) Comment
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(Guid id, Comment comment)
         {
@@ -103,7 +103,7 @@ namespace BlogPage.Controllers
             return NoContent();
         }
 
-        // Post (Add) New Article
+        // Post (Add) New Comment
         [HttpPost]
 
         public async Task<ActionResult<Comment>> PostComment(Comment comment){
@@ -118,7 +118,7 @@ namespace BlogPage.Controllers
             return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
         }
 
-        // Delete Article
+        // Delete Comment
 
 
         private bool CommentExists(Guid id)
