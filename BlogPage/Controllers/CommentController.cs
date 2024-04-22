@@ -75,7 +75,7 @@ namespace BlogPage.Controllers
 
         // Put (Edit) Comment
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticle(Guid id, Comment comment)
+        public async Task<IActionResult> PutComment(Guid id, Comment comment)
         {
             if (id != comment.CommentId)
             {
