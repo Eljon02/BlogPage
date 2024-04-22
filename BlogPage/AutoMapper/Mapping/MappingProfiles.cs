@@ -19,3 +19,4 @@ namespace BlogPage.AutoMapper.Mapping
         }
     }
 }
+
