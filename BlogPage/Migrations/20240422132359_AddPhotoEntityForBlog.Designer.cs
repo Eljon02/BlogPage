@@ -3,6 +3,7 @@ using System;
 using BlogPage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogPage.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240422132359_AddPhotoEntityForBlog")]
+    partial class AddPhotoEntityForBlog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.29");
@@ -39,7 +41,7 @@ namespace BlogPage.Migrations
 
                     b.HasKey("ArticleId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("BlogPage.Models.Comment", b =>
@@ -62,7 +64,7 @@ namespace BlogPage.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BlogPage.Models.Photo", b =>
@@ -83,7 +85,7 @@ namespace BlogPage.Migrations
                     b.HasIndex("ArticleId")
                         .IsUnique();
 
-                    b.ToTable("Photos", (string)null);
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

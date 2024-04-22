@@ -1,5 +1,7 @@
+using BlogPage;
 using BlogPage.AutoMapper.Mapping;
 using BlogPage.Data;
+using BlogPage.Photos;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +27,11 @@ builder.Services.AddCors(opt =>
 
 // Add AutoMapper
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+
+// Add Cloudinary
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("Cloudinary"));
+
+builder.Services.AddScoped<IPhotoAccessor, PhotoAccessor>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
