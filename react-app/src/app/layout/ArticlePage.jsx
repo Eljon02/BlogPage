@@ -30,8 +30,8 @@ export default function ArticlePage() {
 
     const fetchNewestArticles = async () => {
       try {
-          const response = await axios.get('https://localhost:7153/api/Articles');
-          const sortedArticles = response.data.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+          const response = await axios.get(`https://localhost:7153/api/Articles`);
+          const sortedArticles = response.data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
           setNewestArticles(sortedArticles.slice(0, 3));
       } catch (error) {
           console.error('Error fetching newest articles:', error);
@@ -40,6 +40,7 @@ export default function ArticlePage() {
 
     const pathname = window.location.pathname;
     const articleId = pathname.split('/').pop();
+
 
     fetchArticle(articleId);
     fetchNewestArticles();
@@ -59,13 +60,14 @@ export default function ArticlePage() {
                     <img src="https://picsum.photos/600/400" alt="Description" className="rounded-lg object-cover w-auto h-auto" />
                 </div>
                 <p className="text-gray-800 mb-4 text-center">{article.content}</p>
-                <p className="text-gray-600 text-center">By {article.author} | Published on {formatDate(article.newDate)}</p>
+                <p className="text-gray-600 text-center">By {article.author} | Published on {formatDate(article.publicationDate)}</p>
             </div>
         </div>
         <div className="container mx-auto px-4 py-8">
             <h2 className="text-2xl font-semibold mb-4 text-center">Top 3 Newest Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {newestArticles.map((newestArticle) => (
+                
+                {newestArticles.map(newestArticle => (
                     <div key={newestArticle.id} className="bg-white rounded-lg shadow-md p-4">
                         <h3 className="text-lg font-semibold mb-2 text-center">
                             <Link to={`/article/${newestArticle.id}`} className="hover:text-blue-600">{newestArticle.title}</Link>
@@ -74,7 +76,7 @@ export default function ArticlePage() {
                     <img src="https://picsum.photos/600/600" alt="Description" className="rounded-lg object-cover w-64 h-auto" />
                 </div>
                         <p className="text-gray-800 mb-4 text-center">{newestArticle.content}</p>
-                        <p className="text-gray-600 text-center">By {newestArticle.author} | Published on {formatDate(newestArticle.publishDate)}</p>
+                        <p className="text-gray-600 text-center">By {newestArticle.author} | Published on {formatDate(newestArticle.publicationDate)}</p>
                         <p className="text-gray-700">{newestArticle.shortDescription}</p>
                     </div>
                 ))}
