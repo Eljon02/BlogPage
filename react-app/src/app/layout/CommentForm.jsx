@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 
-const CommentForm = ({ onSubmit, article }) => {
-  const [content, setContent] = useState(article ? article.title : '');
+const CommentForm = ({ onSubmit }) => {
+  const [content, setContent] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({content });
+    onSubmit({ content });
+    setContent(''); // Clear the field after submit
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <label htmlFor="Post your comment:" className="block text-gray-700 font-bold mb-2">Share your comment:</label>
+        <label htmlFor="content" className="block text-gray-700 font-bold mb-2">Share your comment:</label>
         <input
           type="text"
           id="content"
