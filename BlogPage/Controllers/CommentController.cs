@@ -136,7 +136,24 @@ namespace BlogPage.Controllers
         }
 
         // Delete Comment
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
 
+            _context.Comments.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         private bool CommentExists(Guid id)
         {
