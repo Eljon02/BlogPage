@@ -71,10 +71,10 @@ const ArticlePage = () => {
         <Navbar />
         <div className="text-gray-700 p-6 min-h-screen">
             <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-semibold text-center">{article.title}</h2>
                 <div className="mb-2 flex justify-center">
                     <img src="https://picsum.photos/600/400" alt="Description" className="rounded-lg object-cover w-auto h-auto" />
                 </div>
-                <h2 className="text-3xl font-semibold text-center">{article.title}</h2>
                 <p className="text-gray-600 mb-4 text-center">By {article.author} | Published on {formatDate(article.publicationDate)}</p>
                 <p className="text-gray-800 text-center">{article.content}</p>
             </div>

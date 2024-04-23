@@ -16,6 +16,7 @@ namespace BlogPage.AutoMapper.Mapping
                 .ForMember(d => d.Image, o => o.MapFrom(a => a.Photo.Url));
 
             CreateMap<Comment, CommentDto>();
+            CreateMap<Category, CategoryDto>();
         }
     }
 }

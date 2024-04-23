@@ -8,6 +8,7 @@
         public DateTime PublicationDate { get; set; }
         public string[]? Tags { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<Category> Categories { get; set; } = new List<Category>();
         public Photo? Photo { get; set; }
     }
 }
