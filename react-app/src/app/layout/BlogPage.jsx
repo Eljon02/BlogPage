@@ -38,7 +38,7 @@ export default function BlogPage() {
       <div className="bg-slate-50 text-gray-700 p-6 min-h-screen items-center">
         <div className="container mx-auto px-4 py-8">
           <div className="container py-4 mb-8 border-b border-gray-300">
-            <h1 className="text-3xl font-bold mb-2 text-center">Blog  Page</h1>
+            <h1 className="text-3xl font-bold mb-2 text-center">Blog Page</h1>
             <h2 className="text-xl text-gray-600 mb-4 text-center">Read the most interesting articles, written from our best experst!</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
