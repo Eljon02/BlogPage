@@ -39,15 +39,13 @@ namespace BlogPage.Controllers
         }
 
         // Get Comments By Id
-
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentDto>> GetComment(Guid id)
         {
-            if (_context.Comments == null)
-            {
-                return NotFound();
-            }
-            var comment = await _context.Comments.ProjectTo<CommentDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.CommentId == id);
+            var comment = await _context.Comments
+                .Include(c => c.Article) // Include the article
+                .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(x => x.CommentId == id);
 
             if (comment == null)
             {
@@ -58,7 +56,6 @@ namespace BlogPage.Controllers
         }
 
         // Get Comment by BlogId
-
         [HttpGet("blog/{articleId}")]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsByArticleID(Guid articleId)
         {
@@ -75,14 +72,26 @@ namespace BlogPage.Controllers
 
         // Put (Edit) Comment
         [HttpPut("{id}")]
+<<<<<<< HEAD
         public async Task<IActionResult> PutArticle(Guid id, Comment comment)
+=======
+        public async Task<IActionResult> PutComment(Guid id, CommentDto commentDto)
+>>>>>>> 7e7de2847d8bb480456fce15850b2d28351e7215
         {
-            if (id != comment.CommentId)
+            if (id != commentDto.CommentId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(comment).State = EntityState.Modified;
+            var existingComment = await _context.Comments.Include(c => c.Article).FirstOrDefaultAsync(c => c.CommentId == id);
+
+            if (existingComment == null)
+            {
+                return NotFound();
+            }
+
+            // Update comment fields
+            existingComment.Body = commentDto.Body;
 
             try
             {
@@ -105,13 +114,25 @@ namespace BlogPage.Controllers
 
         // Post (Add) New Comment
         [HttpPost]
-
-        public async Task<ActionResult<Comment>> PostComment(Comment comment){
-
-            if (_context.Comments == null)
+        public async Task<ActionResult<Comment>> PostComment([FromBody] Comment comment)
+        {
+            if (!ModelState.IsValid)
             {
-                return Problem("Entity set 'ApplicationDbContext.Articles'  is null.");
+                return BadRequest(ModelState);
             }
+
+            var article = await _context.Articles.FindAsync(comment.Article.ArticleId);
+            if (article == null)
+            {
+                return NotFound("Article not found");
+            }
+
+            // Ensure that the article property of the comment is set correctly
+            comment.Article = article;
+
+            // Set the creation time
+            comment.CreatedAt = DateTime.UtcNow;
+
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 

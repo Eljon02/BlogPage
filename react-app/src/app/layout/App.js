@@ -3,7 +3,6 @@ import './App.css';
 import HomePage from './HomePage';
 import BlogPage from './BlogPage';
 import ArticleForm from './ArticleForm';
-import Navbar from './Navbar';
 import ArticlePage from './ArticlePage';
 
 function App() {
