@@ -4,6 +4,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import CommentForm from './CommentForm';
 import { Link } from 'react-router-dom';
+import {v4 as uuid} from 'uuid'
 
 const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -56,9 +57,9 @@ const ArticlePage = () => {
 
   const handleSubmitComment = async (commentData) => {
     try {
-      const response = await axios.post(`https://localhost:7153/Api/Comment`, {
+      const response = await axios.post(`https://localhost:7153/Api/Comment/${id}`, {
+        commentId: uuid(),
         body: commentData.content, // Sending the comment content as 'body'
-        article: { articleId: id } // Providing the articleId in the 'article' object
       });
       setComments([...comments, response.data]);
     } catch (error) {

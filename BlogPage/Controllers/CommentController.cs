@@ -42,10 +42,11 @@ namespace BlogPage.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CommentDto>> GetComment(Guid id)
         {
-            var comment = await _context.Comments
-                .Include(c => c.Article) // Include the article
-                .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(x => x.CommentId == id);
+            if (_context.Comments == null)
+            {
+                return NotFound();
+            }
+            var comment = await _context.Comments.ProjectTo<CommentDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.CommentId == id);
 
             if (comment == null)
             {
@@ -72,26 +73,20 @@ namespace BlogPage.Controllers
 
         // Put (Edit) Comment
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(Guid id, CommentDto commentDto)
+        public async Task<IActionResult> PutComment(Guid id, Comment comment)
         {
-            if (id != commentDto.CommentId)
+            if (id != comment.CommentId)
             {
                 return BadRequest();
             }
-
-            var existingComment = await _context.Comments.Include(c => c.Article).FirstOrDefaultAsync(c => c.CommentId == id);
-
-            if (existingComment == null)
-            {
-                return NotFound();
-            }
-
-            // Update comment fields
-            existingComment.Body = commentDto.Body;
-
+            var newComment = await _context.Comments.FindAsync(id);
+            _mapper.Map(comment, newComment);
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
+                if (result) return NoContent();
+                return BadRequest("Problem updating comment!");
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -104,35 +99,39 @@ namespace BlogPage.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // Post (Add) New Comment
-        [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment([FromBody] Comment comment)
+        [HttpPost("{articleId}")]
+
+        public async Task<ActionResult<CommentDto>> PostComment(CommentDto comment, Guid articleId)
         {
-            if (!ModelState.IsValid)
+            var article = await _context.Articles.FindAsync(articleId);
+
+            if(article == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            var article = await _context.Articles.FindAsync(comment.Article.ArticleId);
-            if (article == null)
+            var newComment = new Comment
             {
-                return NotFound("Article not found");
+                CommentId = comment.CommentId,
+                Body = comment.Body,
+                Article = article
+            };
+
+            article.Comments.Add(newComment);
+
+            if (_context.Comments == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Articles'  is null.");
             }
+            _context.Comments.Add(newComment);
+            var result = await _context.SaveChangesAsync() > 0;
 
-            // Ensure that the article property of the comment is set correctly
-            comment.Article = article;
+            if (result) return Ok(_mapper.Map<CommentDto>(newComment));
 
-            // Set the creation time
-            comment.CreatedAt = DateTime.UtcNow;
-
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetComment", new { id = comment.CommentId }, comment);
+            return BadRequest("Problem creating comment!");
         }
 
         // Delete Comment
