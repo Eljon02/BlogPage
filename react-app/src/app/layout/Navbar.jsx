@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faX } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faX, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 export default function Navbar() {
   const [toggle, setToggle] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('');
   const onToggleMenu = () => {
     setToggle(!toggle);
   }
@@ -39,10 +40,26 @@ export default function Navbar() {
                         <Link className="hover:text-gray-500" to="/blog">Blog</Link>
                     </li>
                     <li>
+                         <Link className="hover:text-gray-500" to="/Categories">Categories</Link>
+                     </li>
+                    <li>
                         <Link className="hover:text-gray-500" to="/">Contact Us</Link>
                     </li>
                 </ul>
             </div>
+            <div className="flex items-center gap-6">
+          {/* Search box */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border rounded-md py-1 px-3 focus:outline-none focus:border-blue-500"
+            />
+            <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
+          </div>
+          </div>
             <div className="flex items-center gap-6">
           <button className="bg-blue-800 text-white px-5 py-2 rounded-full hover:bg-blue-900">Sign in</button>
           {
