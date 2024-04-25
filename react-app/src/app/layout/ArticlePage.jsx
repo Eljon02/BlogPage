@@ -34,7 +34,7 @@ const ArticlePage = () => {
     const fetchNewestArticles = async () => {
       try {
         const response = await axios.get('https://localhost:7153/api/Articles');
-        const sortedArticles = response.data.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+        const sortedArticles = response.data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
         setNewestArticles(sortedArticles.slice(0, 3));
       } catch (error) {
         console.error('Error fetching newest articles:', error);
