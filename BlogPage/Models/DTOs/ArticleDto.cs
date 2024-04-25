@@ -11,6 +11,9 @@ namespace BlogPage.Models.DTOs
         public DateTime PublicationDate { get; set; } = DateTime.Now;
         public string[]? Tags { get; set; }
         public string Image { get; set; } = string.Empty;
+        public string? UserId { get; set; }
+        public string? UserName { get; set; }
+        public UserProfile User { get; set; }
         public ICollection<CommentProfile> Comments { get; set; }
     }
 }

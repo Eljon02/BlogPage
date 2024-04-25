@@ -1,10 +1,10 @@
-import React from 'react'
-import Sidebar from '../layout/Sidebar'
+// import React from 'react'
+// import Sidebar from '../layout/Sidebar'
 
-export default function AdminPage() {
-  return (
-    <div className="flex">
-      <Sidebar />
-    </div>
-  );
-}
+// export default function AdminPage() {
+//   return (
+//     <div className="flex">
+//       <Sidebar />
+//     </div>
+//   );
+// }
