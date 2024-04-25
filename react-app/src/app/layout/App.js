@@ -9,6 +9,8 @@ import AdminPage from '../admin/AdminPage';
 import ArticleDashboard from '../../features/articles/dashboard/ArticleDashboard';
 import ArticleFormNew from "../../features/articles/form/ArticleFormNew.jsx";
 import SearchResultPage from './SearchResultPage';
+import SignInForm from './SignInForm';
+import LogInForm from './LogInForm';
 import Navbar from './Navbar';
 
 function App() {
@@ -23,6 +25,8 @@ function App() {
       <Route path="/admin/articles/edit/:articleId" element={<ArticleFormNew />} />
       <Route path="/CategoryComponents" element={<CategoryComponents />} />
       <Route path="/search" element={<SearchResultPage />} />
+      <Route path="/SignInForm" element={<SignInForm />} />
+      <Route path="/LogInForm" element={<LogInForm />} />
       {/* Pass history prop to Navbar */}
       <Route path="*" element={<Navbar />} />
     </Routes>

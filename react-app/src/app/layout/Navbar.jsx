@@ -78,7 +78,10 @@ export default function Navbar({ history }) {
           </div>
           </div>
             <div className="flex items-center gap-6">
-          <button className="bg-blue-800 text-white px-5 py-2 rounded-full hover:bg-blue-900">Sign in</button>
+         
+          <Link to="/LogInForm" className="bg-blue-800 text-white px-5 py-2 rounded-full hover:bg-blue-900">
+           Log in
+          </Link>
           {
             toggle === false ?
               <FontAwesomeIcon icon={faBars} className='text-3xl cursor-pointer md:hidden' onClick={onToggleMenu} /> :
