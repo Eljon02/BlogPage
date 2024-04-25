@@ -4,6 +4,7 @@ import HomePage from './HomePage';
 import BlogPage from './BlogPage';
 // import ArticleForm from './ArticleForm';
 import ArticlePage from './ArticlePage';
+import CategoryComponents from './CategoryComponents';
 import AdminPage from '../admin/AdminPage';
 import ArticleDashboard from '../../features/articles/dashboard/ArticleDashboard';
 import ArticleFormNew from "../../features/articles/form/ArticleFormNew.jsx";
@@ -18,6 +19,7 @@ function App() {
       <Route path="/admin/articles" Component={ArticleDashboard} />
       <Route path="/admin/articles/add" Component={ArticleFormNew} />
       <Route path="/admin/articles/edit/:articleId" Component={ArticleFormNew} />
+      <Route path="/CategoryComponents" Component={CategoryComponents} />
     </Routes>
   );
 }
