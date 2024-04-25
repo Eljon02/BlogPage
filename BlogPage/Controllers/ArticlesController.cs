@@ -94,9 +94,11 @@ namespace BlogPage.Controllers
               return Problem("Entity set 'ApplicationDbContext.Articles'  is null.");
           }
             _context.Articles.Add(article);
-            await _context.SaveChangesAsync();
+            var result  =await _context.SaveChangesAsync() > 0;
 
-            return CreatedAtAction("GetArticle", new { id = article.ArticleId }, article);
+            if(result) return Ok(_mapper.Map<ArticleDto>(article));
+
+            return BadRequest("Problem adding article!");
         }
 
         // Delete Article
