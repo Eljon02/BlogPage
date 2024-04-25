@@ -8,18 +8,23 @@ import CategoryComponents from './CategoryComponents';
 import AdminPage from '../admin/AdminPage';
 import ArticleDashboard from '../../features/articles/dashboard/ArticleDashboard';
 import ArticleFormNew from "../../features/articles/form/ArticleFormNew.jsx";
+import SearchResultPage from './SearchResultPage';
+import Navbar from './Navbar';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" Component={HomePage} />
-      <Route path="/blog" Component={BlogPage} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/blog" element={<BlogPage />} />
       {/* <Route path="/ArticleForm" Component={ArticleForm} /> */}
-      <Route path="/article/:id" Component={ArticlePage} />
-      <Route path="/admin/articles" Component={ArticleDashboard} />
-      <Route path="/admin/articles/add" Component={ArticleFormNew} />
-      <Route path="/admin/articles/edit/:articleId" Component={ArticleFormNew} />
-      <Route path="/CategoryComponents" Component={CategoryComponents} />
+      <Route path="/article/:id" element={<ArticlePage />} />
+      <Route path="/admin/articles" element={<ArticleDashboard />} />
+      <Route path="/admin/articles/add" element={<ArticleFormNew />} />
+      <Route path="/admin/articles/edit/:articleId" element={<ArticleFormNew />} />
+      <Route path="/CategoryComponents" element={<CategoryComponents />} />
+      <Route path="/search" element={<SearchResultPage />} />
+      {/* Pass history prop to Navbar */}
+      <Route path="*" element={<Navbar />} />
     </Routes>
   );
 }

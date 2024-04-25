@@ -55,6 +55,25 @@ namespace BlogPage.Controllers
             return article;
         }
 
+        // Get articles via query
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<ArticleDto>>> SearchArticles([FromQuery] string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return BadRequest("Search term cannot be empty.");
+            }
+
+            var matchingArticles = await _context.Articles
+                .Where(a => EF.Functions.Like(a.Title, $"%{searchTerm}%")
+//                            ||  EF.Functions.Like(a.Content, $"%{searchTerm}%")
+                            )
+                .ProjectTo<ArticleDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return Ok(matchingArticles);
+        }
+
         // Put (Edit) Article
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(Guid id, Article article)

@@ -1,14 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faX, faSearch } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faX, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function Navbar() {
-  const [toggle, setToggle] = useState(false)
+export default function Navbar({ history }) {
+  const [toggle, setToggle] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate() // Instead of useHistory
+
   const onToggleMenu = () => {
     setToggle(!toggle);
-  }
+  };
+
+  const handleSearch = async () => {
+    try {
+      navigate(`/search?q=${searchQuery}`); // Instead of history.push
+    } catch (error) {
+      console.error('Error searching articles:', error);
+    } finally {
+      setSearchQuery(''); // Clear the search box
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,7 +28,7 @@ export default function Navbar() {
         setToggle(false)
       }
     };
-  
+
     window.addEventListener('resize', handleResize);
 
     return () => {
@@ -55,6 +67,11 @@ export default function Navbar() {
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+              }}
               className="border rounded-md py-1 px-3 focus:outline-none focus:border-blue-500"
             />
             <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500" />
