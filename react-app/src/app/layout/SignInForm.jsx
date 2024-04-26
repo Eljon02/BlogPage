@@ -1,16 +1,14 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom/dist';
+import axios from "axios";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom/dist";
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    surname: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-    country: '',
+    firstName: "",
+    userName: "",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
 
@@ -26,6 +24,10 @@ const SignInForm = () => {
         "https://localhost:7153/api/authentication/register",
         formData
       );
+      await axios.post("https://localhost:7153/api/authentication/login", {
+        email: formData.email,
+        password: formData.password,
+      });
       console.log("Response:", response.data);
       navigate("/blog");
     } catch (error) {
@@ -37,40 +39,61 @@ const SignInForm = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
         <div className="flex justify-between mb-6">
-          <Link to="/LogInForm" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">
+          <Link
+            to="/LogInForm"
+            className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300"
+          >
             Log In
           </Link>
-          <Link to="/SignInForm" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300 item-center">
+          <Link
+            to="/SignInForm"
+            className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300 item-center"
+          >
             Sign Up
           </Link>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+            <label
+              htmlFor="firstName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
               onChange={handleChange}
               className="mt-1 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:border-blue-500"
               required
             />
           </div>
           <div>
-            <label htmlFor="surname" className="block text-sm font-medium text-gray-700">Username</label>
+            <label
+              htmlFor="userName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
             <input
               type="text"
-              id="surname"
-              name="surname"
-              value={formData.surname}
+              id="userName"
+              name="userName"
+              value={formData.userName}
               onChange={handleChange}
               className="mt-1 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:border-blue-500"
               required
             />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
@@ -82,7 +105,12 @@ const SignInForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
@@ -118,7 +146,12 @@ const SignInForm = () => {
             />
           </div> */}
           <div>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-500">Sign Up</button>
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-500"
+            >
+              Sign Up
+            </button>
           </div>
         </form>
       </div>

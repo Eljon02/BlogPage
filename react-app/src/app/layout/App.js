@@ -6,7 +6,7 @@ import BlogPage from "./BlogPage";
 import ArticlePage from "./ArticlePage";
 import CategoryComponents from "./CategoryComponents";
 import ArticleDashboard from "../../features/articles/dashboard/ArticleDashboard";
-import ArticleFormNew from "../../features/articles/form/ArticleFormNew.jsx";
+import ArticleFormNew from "../../features/articles/form/ArticleFormNew";
 import CommentDashboard from "../../features/comments/dashboard/CommentDashboard.jsx";
 import CommentForm from "../../features/comments/form/CommentForm.jsx";
 import SearchResultPage from "./SearchResultPage";
@@ -17,6 +17,10 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { setUser } from "../slices/userSlice.js";
+import UserDashboard from "../../features/users/dashboard/UserDashboard.jsx";
+import MyArticlesPage from "./MyArticlesPage.jsx";
+import AddArticlePage from "./AddArticlePage.jsx";
+import AdminPage from "../admin/AdminPage.jsx";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,15 +46,18 @@ function App() {
       <Route path="/blog" element={<BlogPage />} />
       {/* <Route path="/ArticleForm" Component={ArticleForm} /> */}
       <Route path="/article/:id" Component={ArticlePage} />
-      <Route path="/admin/articles" Component={ArticleDashboard} />
-      <Route path="/admin/articles/add" Component={ArticleFormNew} />
-      <Route
-        path="/admin/articles/edit/:articleId"
-        Component={ArticleFormNew}
-      />
-      <Route path="/admin/comments" Component={CommentDashboard} />
-      <Route path="/admin/comments/add" Component={CommentForm} />
-      <Route path="/admin/comments/edit/:commentId" Component={CommentForm} />
+      <Route path="/admin/*" element={<AdminPage />}>
+        <Route path="articles" Component={ArticleDashboard} />
+        <Route path="articles/add" element={<ArticleFormNew cancelLinkTo='/admin/articles' />} />
+        <Route path="articles/edit/:articleId" element={<ArticleFormNew cancelLinkTo='/admin/articles' />} />
+        <Route path="comments" Component={CommentDashboard} />
+        <Route path="comments/add" Component={CommentForm} />
+        <Route path="comments/edit/:commentId" Component={CommentForm} />
+        <Route path="users" Component={UserDashboard} />
+      </Route>
+      <Route path="/articles" Component={MyArticlesPage} />
+      <Route path="/articles/add" Component={AddArticlePage} />
+      <Route path="/articles/edit/:articleId" Component={AddArticlePage} />
       <Route path="/CategoryComponents" Component={CategoryComponents} />
       <Route path="/CategoryComponents" element={<CategoryComponents />} />
       <Route path="/search" element={<SearchResultPage />} />

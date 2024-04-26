@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Sidebar from "../../../app/layout/Sidebar";
 import { v4 as uuid } from "uuid";
 
-export default function ArticleFormNew() {
+export default function ArticleFormNew({ cancelLinkTo }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(undefined);
@@ -102,10 +101,7 @@ export default function ArticleFormNew() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div className="flex-1 min-w-[250px]">
-        <Sidebar />
-      </div>
+    <div style={{ display: "flex", margin: "0 auto" }}>
       <div style={{ flex: 5, margin: "50px" }}>
         <div className="top gap-4 mb-4 text-center font-bold">
           <h1>Add/Edit</h1>
@@ -158,7 +154,7 @@ export default function ArticleFormNew() {
             />
           </div>
           <div style={{ marginTop: "20px" }}>
-            <Link to="/admin/articles">
+            <Link to={ cancelLinkTo}>
               <button
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
                 type="button"

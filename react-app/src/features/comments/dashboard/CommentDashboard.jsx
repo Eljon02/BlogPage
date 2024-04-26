@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../../app/layout/Sidebar";
 import CommentTable from "./CommentTable";
 import axios from "axios";
 
@@ -32,17 +31,12 @@ export default function CommentDashboard() {
   };
 
   return (
-    <div className="flex relative overflow-x-hidden">
-      <div className="min-w-[250px] w-[250px]">
-        <Sidebar />
-      </div>
-      <div className="overflow-x-auto shadow-md sm:rounded-lg flex-5 m-[50px]">
-        <CommentTable
-          handleCommentDelete={handleCommentDelete}
-          comments={comments}
-          style={{ marginTop: "20px" }}
-        />
-      </div>
+    <div className="overflow-x-auto shadow-md sm:rounded-lg flex-5 m-[50px]">
+      <CommentTable
+        handleCommentDelete={handleCommentDelete}
+        comments={comments}
+        style={{ marginTop: "20px" }}
+      />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Sidebar from "../../../app/layout/Sidebar";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 
@@ -72,10 +71,7 @@ export default function CommentForm() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div className="flex-1 min-w-[250px]">
-        <Sidebar />
-      </div>
+    <div style={{ display: "flex", margin: "0 auto" }}>
       <div style={{ flex: 5, margin: "50px" }}>
         <div className="top gap-4 mb-4 text-center font-bold">
           <h1>Add/Edit</h1>

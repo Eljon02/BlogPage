@@ -55,7 +55,7 @@ export default function Navbar({ history }) {
           console.log(error);
         });
     }
-  }, [ dispatch]);
+  }, [dispatch]);
 
   const handleDropDown = () => {
     setOpen(!open);
@@ -72,10 +72,11 @@ export default function Navbar({ history }) {
         email: "",
       })
     );
+    navigate('/blog')
   };
 
   return (
-    <header className="bg-white min-h-fit h-[15%]">
+    <header className="bg-white h-[15%]">
       <nav className="flex justify-between items-center w-[92%] mx-auto h-full">
         <div>
           <h1 className="w-36 font-bold text-3xl cursor-pointer">Blog Page</h1>
@@ -158,17 +159,21 @@ export default function Navbar({ history }) {
                   </span>
                 </div>
                 <ul className="py-2">
+                  {user.roli.includes("Administrator") ? (
+                    <li>
+                      <Link
+                        to="/admin/articles"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  ) : (
+                    ""
+                  )}
                   <li>
                     <Link
-                      to="/admin/articles"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
+                      to="/articles"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       My Articles

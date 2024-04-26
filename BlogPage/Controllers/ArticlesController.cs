@@ -58,6 +58,23 @@ namespace BlogPage.Controllers
             return article;
         }
 
+        // Get user's articles
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<IEnumerable<ArticleDto>>> GetUserArticles()
+        {
+            if (_context.Articles == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return await _context.Articles.Where(x => x.User == user).ProjectTo<ArticleDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
         // Get articles via query
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ArticleDto>>> SearchArticles([FromQuery] string searchTerm)
