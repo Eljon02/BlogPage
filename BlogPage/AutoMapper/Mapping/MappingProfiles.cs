@@ -27,7 +27,8 @@ namespace BlogPage.AutoMapper.Mapping
 
             CreateMap<Comment, CommentDto>()
                 .ForMember(d => d.FirstName, o => o.MapFrom(a => a.Author.FirstName))
-                .ForMember(d => d.UserName, o => o.MapFrom(a => a.Author.UserName)); ;
+                .ForMember(d => d.UserName, o => o.MapFrom(a => a.Author.UserName))
+                .ForMember(d => d.CreatedAt, o => o.Ignore());
 
             CreateMap<Article, Article>();
 

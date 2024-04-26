@@ -101,6 +101,8 @@ namespace BlogPage.Controllers
 
             return Unauthorized();
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> CurrentUser()
         {
@@ -118,6 +120,7 @@ namespace BlogPage.Controllers
                 Result = true,
                 FirstName = user.FirstName,
                 UserName = user.UserName,
+                Email = user.Email,
                 Token = jwtToken,
                 Roli = rolet
             });

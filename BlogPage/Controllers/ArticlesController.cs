@@ -10,6 +10,7 @@ using BlogPage.Models;
 using AutoMapper.QueryableExtensions;
 using BlogPage.Models.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogPage.Controllers
 {
@@ -19,11 +20,13 @@ namespace BlogPage.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
 
-        public ArticlesController(ApplicationDbContext context, IMapper mapper)
+        public ArticlesController(ApplicationDbContext context, IMapper mapper, IUserAccessor userAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
         }
 
         // Get All Articles
@@ -75,6 +78,7 @@ namespace BlogPage.Controllers
         }
 
         // Put (Edit) Article
+        [Authorize(Roles ="Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle(Guid id, Article article)
         {
@@ -83,11 +87,14 @@ namespace BlogPage.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(article).State = EntityState.Modified;
+            var newArticle = await _context.Articles.FindAsync(id);
+            _mapper.Map(article, newArticle);
 
             try
             {
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
+                if (result) return NoContent();
+                return BadRequest("Problem updating article!");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -101,10 +108,10 @@ namespace BlogPage.Controllers
                 }
             }
 
-            return NoContent();
         }
 
         // Post (Add) New Article
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<ActionResult<Article>> PostArticle(Article article)
         {
@@ -112,6 +119,10 @@ namespace BlogPage.Controllers
           {
               return Problem("Entity set 'ApplicationDbContext.Articles'  is null.");
           }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+
+            article.User = user;
+
             _context.Articles.Add(article);
             var result  =await _context.SaveChangesAsync() > 0;
 
@@ -121,6 +132,7 @@ namespace BlogPage.Controllers
         }
 
         // Delete Article
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteArticle(Guid id)
         {

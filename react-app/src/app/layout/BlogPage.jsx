@@ -17,7 +17,7 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get('https://localhost:7153/api/Articles '); //5052
+        const response = await axios.get('https://localhost:7153/api/Articles'); //5052
         setArticles(response.data);
       } catch (error) {
         console.error('Error fetching articles:', error);

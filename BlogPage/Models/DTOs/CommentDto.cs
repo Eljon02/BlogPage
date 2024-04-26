@@ -8,7 +8,7 @@ namespace BlogPage.Models.DTOs
         public DateTime CreatedAt { get; set; }
         public string Body { get; set; }
         public ArticleProfile? Article { get; set; }
-        public string UserName { get; set; }
-        public string FirstName { get; set; }
+        public string? UserName { get; set; }
+        public string? FirstName { get; set; }
     }
 }

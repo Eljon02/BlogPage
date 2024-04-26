@@ -1,5 +1,7 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom/dist';
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,7 @@ const SignInForm = () => {
     phoneNumber: '',
     country: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,8 +21,16 @@ const SignInForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle sign-in logic here
-    console.log('Sign-in form submitted:', formData);
+    try {
+      const response = await axios.post(
+        "https://localhost:7153/api/authentication/register",
+        formData
+      );
+      console.log("Response:", response.data);
+      navigate("/blog");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -30,7 +41,7 @@ const SignInForm = () => {
             Log In
           </Link>
           <Link to="/SignInForm" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300 item-center">
-            Sign In
+            Sign Up
           </Link>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -47,7 +58,7 @@ const SignInForm = () => {
             />
           </div>
           <div>
-            <label htmlFor="surname" className="block text-sm font-medium text-gray-700">Surname</label>
+            <label htmlFor="surname" className="block text-sm font-medium text-gray-700">Username</label>
             <input
               type="text"
               id="surname"
@@ -82,7 +93,7 @@ const SignInForm = () => {
               required
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Phone Number</label>
             <input
               type="text"
@@ -105,9 +116,9 @@ const SignInForm = () => {
               className="mt-1 p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:border-blue-500"
               required
             />
-          </div>
+          </div> */}
           <div>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-500">Sign In</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-500">Sign Up</button>
           </div>
         </form>
       </div>

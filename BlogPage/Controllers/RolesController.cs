@@ -30,7 +30,7 @@ namespace BlogPage.Controllers
             _roleManager = roleManager;
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public IActionResult GetAllRoles()
         {
@@ -38,7 +38,7 @@ namespace BlogPage.Controllers
             return Ok(roles);
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(string name)
         {
@@ -72,7 +72,7 @@ namespace BlogPage.Controllers
             return BadRequest(new { error = "Role already exist" });
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         [Route("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
@@ -81,7 +81,7 @@ namespace BlogPage.Controllers
             return Ok(users);
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [Route("AddUserToRole")]
         public async Task<IActionResult> AddUserToRole(string email, string roleName)
@@ -132,7 +132,7 @@ namespace BlogPage.Controllers
 
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         [Route("GetUserRoles")]
         public async Task<IActionResult> GetUserRoles(string email)
@@ -155,7 +155,7 @@ namespace BlogPage.Controllers
             return Ok(roles);
         }
 
-        /*[Authorize(Roles = "Administrator")]*/
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [Route("RemoveUserFromRole")]
         public async Task<IActionResult> RemoveUserFromRole(string email, string roleName)

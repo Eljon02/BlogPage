@@ -10,6 +10,8 @@ using BlogPage.Models;
 using AutoMapper.QueryableExtensions;
 using BlogPage.Models.DTOs;
 using AutoMapper;
+using BlogPage.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogPage.Controllers
 {
@@ -20,11 +22,13 @@ namespace BlogPage.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUserAccessor _userAccessor;
 
-        public CommentController(ApplicationDbContext context, IMapper mapper)
+        public CommentController(ApplicationDbContext context, IMapper mapper, IUserAccessor userAccessor)
         {
             _context = context;
             _mapper = mapper;
+            _userAccessor = userAccessor;
         }
 
         // Get All Comments
@@ -72,6 +76,7 @@ namespace BlogPage.Controllers
         }
 
         // Put (Edit) Comment
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComment(Guid id, Comment comment)
         {
@@ -102,9 +107,10 @@ namespace BlogPage.Controllers
         }
 
         // Post (Add) New Comment
+        [Authorize(Roles = "Administrator")]
         [HttpPost("{articleId}")]
 
-        public async Task<ActionResult<CommentDto>> PostComment(CommentDto comment, Guid articleId)
+        public async Task<ActionResult<CommentDto>> PostComment(Comment comment, Guid articleId)
         {
             var article = await _context.Articles.FindAsync(articleId);
 
@@ -113,11 +119,14 @@ namespace BlogPage.Controllers
                 return NotFound();
             }
 
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
+
             var newComment = new Comment
             {
                 CommentId = comment.CommentId,
                 Body = comment.Body,
-                Article = article
+                Article = article,
+                Author= user
             };
 
             article.Comments.Add(newComment);
@@ -135,6 +144,7 @@ namespace BlogPage.Controllers
         }
 
         // Delete Comment
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(Guid id)
         {
