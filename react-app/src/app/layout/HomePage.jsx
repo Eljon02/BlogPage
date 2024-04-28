@@ -56,7 +56,7 @@ const HomePage = () => {
           <div className="flex justify-center mt-8 space-x-4">
             <Link to="/blog" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">Read the Blog</Link>
             <Link to="/ArticleForm" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">Add/Edit Article</Link>
-            <Link to="/CategoryComponents" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">Category</Link>
+            <Link to="/Categories" className="bg-white text-blue-500 hover:bg-blue-400 hover:text-white font-semibold py-3 px-8 rounded-full transition duration-300">Category</Link>
           </div>
         </div>
       </div>

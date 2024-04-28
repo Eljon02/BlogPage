@@ -4,7 +4,7 @@ import HomePage from "./HomePage";
 import BlogPage from "./BlogPage";
 // import ArticleForm from './ArticleForm';
 import ArticlePage from "./ArticlePage";
-import CategoryComponents from "./CategoryComponents";
+import Categories from "./Categories";
 import ArticleDashboard from "../../features/articles/dashboard/ArticleDashboard";
 import ArticleFormNew from "../../features/articles/form/ArticleFormNew";
 import CommentDashboard from "../../features/comments/dashboard/CommentDashboard.jsx";
@@ -58,8 +58,8 @@ function App() {
       <Route path="/articles" Component={MyArticlesPage} />
       <Route path="/articles/add" Component={AddArticlePage} />
       <Route path="/articles/edit/:articleId" Component={AddArticlePage} />
-      <Route path="/CategoryComponents" Component={CategoryComponents} />
-      <Route path="/CategoryComponents" element={<CategoryComponents />} />
+      <Route path="/Categories" Component={Categories} />
+      <Route path="/Categories" element={<Categories />} />
       <Route path="/search" element={<SearchResultPage />} />
       <Route path="/SignInForm" element={<SignInForm />} />
       <Route path="/LogInForm" element={<LogInForm />} />
