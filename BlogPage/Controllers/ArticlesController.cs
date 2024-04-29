@@ -75,19 +75,37 @@ namespace BlogPage.Controllers
             return await _context.Articles.Where(x => x.User == user).ProjectTo<ArticleDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
-        // Get articles via query
+        // Add a new enum to specify the search type
+        public enum SearchType
+        {
+            Title,
+            User
+        }
+
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<ArticleDto>>> SearchArticles([FromQuery] string searchTerm)
+        public async Task<ActionResult<IEnumerable<ArticleDto>>> SearchArticles([FromQuery] string searchTerm, [FromQuery] SearchType searchType)
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
                 return BadRequest("Search term cannot be empty.");
             }
 
-            var matchingArticles = await _context.Articles
-                .Where(a => EF.Functions.Like(a.Title, $"%{searchTerm}%")
-//                            ||  EF.Functions.Like(a.Content, $"%{searchTerm}%")
-                            )
+            IQueryable<Article> query = _context.Articles;
+
+            // Apply search based on selected search type
+            switch (searchType)
+            {
+                case SearchType.Title:
+                    query = query.Where(a => EF.Functions.Like(a.Title, $"%{searchTerm}%"));
+                    break;
+                case SearchType.User:
+                    query = query.Where(a => EF.Functions.Like(a.User.UserName, $"%{searchTerm}%"));
+                    break;
+                default:
+                    return BadRequest("Invalid search type.");
+            }
+
+            var matchingArticles = await query
                 .ProjectTo<ArticleDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
 
