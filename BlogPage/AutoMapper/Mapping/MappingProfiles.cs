@@ -32,6 +32,11 @@ namespace BlogPage.AutoMapper.Mapping
 
             CreateMap<Article, Article>();
 
+            CreateMap<Category, CategoryDto>()
+                .ForMember(d => d.Articles, o => o.MapFrom(a => a.Articles));
+
+            CreateMap<Category, Category>();
+
             CreateMap<Comment, Comment>()
                 .ForMember(d => d.CreatedAt, o => o.Ignore());
             CreateMap<Category, CategoryDto>();

@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import Navbar from './Navbar';
-import CommentForm from './CommentForm';
-import { Link } from 'react-router-dom';
-import {v4 as uuid} from 'uuid'
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import CommentForm from "./CommentForm";
+import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 
 // Function to format date string
 const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 };
 
 // Functional component for displaying article and its comments
@@ -26,30 +25,36 @@ const ArticlePage = () => {
   useEffect(() => {
     const fetchArticle = async (id) => {
       try {
-        const response = await axios.get(`https://localhost:7153/api/Articles/${id}`);
+        const response = await axios.get(
+          `https://localhost:7153/api/Articles/${id}`
+        );
         setArticle(response.data);
         window.scrollTo(0, 0); // Scroll to the top of the page when article changes
       } catch (error) {
-        console.error('Error fetching article:', error);
+        console.error("Error fetching article:", error);
       }
     };
 
     const fetchNewestArticles = async () => {
       try {
-        const response = await axios.get('https://localhost:7153/api/Articles');
-        const sortedArticles = response.data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
+        const response = await axios.get("https://localhost:7153/api/Articles");
+        const sortedArticles = response.data.sort(
+          (a, b) => new Date(b.publicationDate) - new Date(a.publicationDate)
+        );
         setNewestArticles(sortedArticles.slice(0, 3));
       } catch (error) {
-        console.error('Error fetching newest articles:', error);
+        console.error("Error fetching newest articles:", error);
       }
     };
 
     const fetchComments = async (id) => {
       try {
-        const response = await axios.get(`https://localhost:7153/Api/Comment/blog/${id}`);
+        const response = await axios.get(
+          `https://localhost:7153/Api/Comment/blog/${id}`
+        );
         setComments(response.data);
       } catch (error) {
-        console.error('Error fetching comments:', error);
+        console.error("Error fetching comments:", error);
       }
     };
 
@@ -61,15 +66,18 @@ const ArticlePage = () => {
   // Function to handle comment submission
   const handleSubmitComment = async (commentData) => {
     try {
-      const response = await axios.post(`https://localhost:7153/Api/Comment/${id}`, {
-        commentId: uuid(),
-        body: commentData.content, // Sending the comment content as 'body'
-      });
+      const response = await axios.post(
+        `https://localhost:7153/Api/Comment/${id}`,
+        {
+          commentId: uuid(),
+          body: commentData.content, // Sending the comment content as 'body'
+        }
+      );
       setComments([...comments, response.data]);
     } catch (error) {
-      console.error('Error posting comment:', error);
+      console.error("Error posting comment:", error);
     }
-  };  
+  };
 
   return (
     <div className='h-screen'>

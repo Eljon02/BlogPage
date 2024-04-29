@@ -72,7 +72,7 @@ export default function Navbar({ history }) {
         email: "",
       })
     );
-    navigate('/blog')
+    navigate("/blog");
   };
 
   return (
@@ -102,14 +102,36 @@ export default function Navbar({ history }) {
                 Categories
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link className="hover:text-gray-500" to="/">
                 Contact Us
               </Link>
-            </li>
+            </li> */}
+            {toggle === true ? (
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                  className="border rounded-md py-1 px-3 focus:outline-none focus:border-blue-500"
+                />
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+                />
+              </div>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 hidden sm:block">
           {/* Search box */}
           <div className="relative">
             <input

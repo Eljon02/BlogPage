@@ -56,7 +56,7 @@ export default function ArticleFormNew({ cancelLinkTo }) {
             }
           );
         }
-        navigate("/admin");
+        navigate(cancelLinkTo);
       } catch (error) {
         console.error("Error adding article:", error);
       }
@@ -93,7 +93,7 @@ export default function ArticleFormNew({ cancelLinkTo }) {
             }
           );
         }
-        navigate("/admin/articles");
+        navigate(cancelLinkTo);
       } catch (error) {
         console.error("Error updating article:", error);
       }

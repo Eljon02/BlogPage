@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
 import ArticleTable from "../../features/articles/dashboard/ArticleTable";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -34,8 +33,7 @@ export default function MyArticlesPage() {
     }
   };
   return (
-    <div className="h-screen">
-      <Navbar />
+    <div>
       <div className="m-7 flex flex-col">
         <div className="flex flex-col gap-5 p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white ml-[50px]">
           <h1 className="font-bold">Add Article</h1>

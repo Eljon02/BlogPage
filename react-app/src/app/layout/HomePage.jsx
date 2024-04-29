@@ -8,8 +8,8 @@ import Footer from './Footer';
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -19,11 +19,13 @@ const HomePage = () => {
   useEffect(() => {
     const fetchTopArticles = async () => {
       try {
-        const response = await axios.get('https://localhost:7153/api/Articles');
-        const sortedArticles = response.data.sort((a, b) => new Date(b.publicationDate) - new Date(a.publicationDate));
+        const response = await axios.get("https://localhost:7153/api/Articles");
+        const sortedArticles = response.data.sort(
+          (a, b) => new Date(b.publicationDate) - new Date(a.publicationDate)
+        );
         setArticles(sortedArticles.slice(0, 6));
       } catch (error) {
-        console.error('Error fetching newest articles:', error);
+        console.error("Error fetching newest articles:", error);
       }
     };
 
@@ -41,7 +43,7 @@ const HomePage = () => {
             <p className="text-lg text-gray-600">This is the beginning of anything you want</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {articles.map(article => {
+            {articles.map((article) => {
               const newDate = formatDate(article.publicationDate);
               return (
                 <article key={article.articleId} className="bg-white rounded-lg shadow-md overflow-hidden">

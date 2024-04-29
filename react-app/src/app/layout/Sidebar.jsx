@@ -48,6 +48,12 @@ export default function Sidebar() {
               <span>Users</span>
             </li>
           </Link>
+          <Link to="/admin/roles" style={{ textDecoration: "none" }}>
+            <li>
+              <GroupOutlinedIcon className="icon" />
+              <span>Roles</span>
+            </li>
+          </Link>
           <p className="title">User</p>
 
           <li>

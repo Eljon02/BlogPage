@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from './Navbar';
 import { Link, useLocation } from 'react-router-dom';
 
 // Function to format date string
@@ -34,8 +33,7 @@ const SearchResultPage = () => {
   }, [searchTerm, searchType]);
 
   return (
-    <div className='h-screen'>
-      <Navbar />
+    <div>
       <div className="bg-slate-50 text-gray-700 p-6 min-h-screen items-center">
         <div className="container mx-auto px-4 py-8">
           <div className="container py-4 mb-8 border-b border-gray-300">

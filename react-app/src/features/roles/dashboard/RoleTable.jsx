@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-export default function UserTable({ users }) {
+export default function RoleTable({ roles }) {
   return (
     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
       <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -9,28 +9,21 @@ export default function UserTable({ users }) {
             ID
           </th>
           <th scope="col" className="px-6 py-3">
-            First Name
+            Role Name
           </th>
-          <th scope="col" className="px-6 py-3">
-            Username
-          </th>
-          <th scope="col" className="px-6 py-3">
-            Email
-          </th>
+
         </tr>
       </thead>
       <tbody>
-        {users.map((user) => (
-          <tr key={user.id} className="bg-white border-b">
+        {roles.map((role) => (
+          <tr key={role.id} className="bg-white border-b">
             <th
               scope="row"
               className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap border-r"
             >
-              {user.id}
+              {role.id}
             </th>
-            <td className="px-6 py-4 border-r">{user.firstName}</td>
-            <td className="px-6 py-4 border-r">{user.userName}</td>
-            <td className="px-6 py-4 border-r">{user.email}</td>
+            <td className="px-6 py-4 border-r">{role.name}</td>
           </tr>
         ))}
       </tbody>

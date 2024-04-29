@@ -4,6 +4,6 @@
     {
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public Article? Article {  get; set; }
+        public ICollection<Article> Articles { get; set; } = new List<Article>();
     }
 }

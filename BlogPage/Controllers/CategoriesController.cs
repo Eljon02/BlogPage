@@ -108,7 +108,7 @@ namespace BlogPage.Controllers
 
         // DELETE: api/categories/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(Guid id)
         {
             if (_context.Categories == null)
             {
