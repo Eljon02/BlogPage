@@ -31,7 +31,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div>
+    <div className='h-screen'>
       <Navbar />
       <div className="bg-gradient-to-r from-gray-100 to-purple-100 min-h-screen flex flex-col justify-center items-center">
         <div className="container mx-auto px-4 py-8">
