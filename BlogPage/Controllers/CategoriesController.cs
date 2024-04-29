@@ -10,6 +10,7 @@ using BlogPage.Models;
 using AutoMapper.QueryableExtensions;
 using BlogPage.Models.DTOs;
 using AutoMapper;
+using BlogPage.Services;
 
 namespace BlogPage.Controllers
 {
@@ -29,72 +30,105 @@ namespace BlogPage.Controllers
 
         // Get All Categories
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryDto>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
-            var categories = _context.Categories.ToList();
-            var categoryDtos = _mapper.Map<List<CategoryDto>>(categories);
-            return Ok(categoryDtos);
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+            return await _context.Categories.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         // Get categories By Id
         [HttpGet("{id}")]
-        public ActionResult<CategoryDto> GetCategory(int id)
+        public async Task<ActionResult<CategoryDto>> GetCategory(Guid id)
         {
-            var category = _context.Categories.Find(id);
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+            var category = await _context.Categories.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.CategoryId == id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            var categoryDto = _mapper.Map<CategoryDto>(category);
-            return Ok(categoryDto);
+            return category;
         }
 
 
         // POST: api/categories
         [HttpPost]
-        public ActionResult<CategoryDto> CreateCategory(CategoryDto categoryDto)
+        public async Task<ActionResult<Category>> CreateCategory(Category category)
         {
-            var category = _mapper.Map<Category>(categoryDto);
-            _context.Categories.Add(category);
-            _context.SaveChanges();
+            if (_context.Categories == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
+            }
 
-            return CreatedAtAction(nameof(GetCategory), new { id = category.CategoryId }, categoryDto);
+            _context.Categories.Add(category);
+            var result = await _context.SaveChangesAsync() > 0;
+
+            if (result) return Ok(_mapper.Map<CategoryDto>(category));
+
+            return BadRequest("Problem adding category!");
         }
 
         // PUT: api/categories/{id}
         [HttpPut("{id}")]
-        public IActionResult UpdateCategory(Guid id, CategoryDto categoryDto)
+        public async Task<IActionResult> UpdateCategory(Guid id, Category category)
         {
-            if (id != categoryDto.CategoryId)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
 
-            var category = _mapper.Map<Category>(categoryDto);
+            var newCategory = await _context.Categories.FindAsync(id);
+            _mapper.Map(category, newCategory);
 
-            _context.Entry(category).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return NoContent();
+            try
+            {
+                var result = await _context.SaveChangesAsync() > 0;
+                if (result) return NoContent();
+                return BadRequest("Problem updating category!");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!CategoryExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         // DELETE: api/categories/{id}
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategory(int id)
+        public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = _context.Categories.Find(id);
-
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
+            var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
 
             _context.Categories.Remove(category);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private bool CategoryExists(Guid id)
+        {
+            return (_context.Categories?.Any(e => e.CategoryId == id)).GetValueOrDefault();
         }
     }
 }
